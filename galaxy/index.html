@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patient Galaxy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div id="labels"></div>
+<div id="tooltip" hidden></div>
+
+<header class="panel hud">
+  <h1>Patient Galaxy</h1>
+  <p class="sub" id="sub">Loading patients...</p>
+  <div class="control"><span>Layout</span>
+    <div class="seg" id="layout"><button data-v="tsne" class="on">t-SNE</button><button data-v="pca">PCA</button></div>
+  </div>
+  <div class="control"><span>Method</span>
+    <div class="seg" id="method"><button data-v="kmeans" class="on">K-Means</button><button data-v="hierarchical">Hierarchical</button></div>
+  </div>
+  <div class="control"><span>Groups</span><div class="seg" id="k"></div></div>
+  <div class="control"><span>Colour</span>
+    <div class="gene">
+      <input id="gene" list="gene-list" placeholder="Search a gene" autocomplete="off" spellcheck="false">
+      <button id="gene-clear" hidden>Groups</button>
+    </div>
+  </div>
+  <datalist id="gene-list"></datalist>
+  <div class="metrics" id="metrics"></div>
+  <p class="note" id="note"></p>
+</header>
+
+<aside class="panel legend" id="legend"></aside>
+
+<section class="panel unseen">
+  <h2>Unseen patients</h2>
+  <p id="unseen-intro"></p>
+  <div class="row">
+    <select id="unseen-pick"></select>
+    <button id="send" class="primary">Send in</button>
+  </div>
+  <div class="row">
+    <button id="random" class="ghost">Random patient</button>
+    <button id="send-all" class="ghost">Send all</button>
+  </div>
+  <div class="row">
+    <button id="import" class="ghost">Import patient file</button>
+  </div>
+  <input id="import-file" type="file" accept=".csv,.tsv,.txt" hidden>
+  <p class="tally" id="import-status"></p>
+  <p class="tally" id="tally"></p>
+</section>
+
+<aside class="panel card" id="card" hidden></aside>
+
+<div id="hint">Drag to orbit. Scroll to zoom. Click any patient.</div>
+<footer>For research and teaching. Groups are statistical, not diagnoses.</footer>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
