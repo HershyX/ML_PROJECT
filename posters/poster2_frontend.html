@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Front End Results Poster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="poster.css">
+<style>
+  .card > h2 { font-size: 13pt; padding: 2.4mm 5mm; }
+  .card > h2 svg { font-size: 14pt; }
+  .row.screens { grid-template-columns: repeat(3, 1fr); gap: 5mm; flex: none; }
+  .row.screens .inner { padding: 4mm 4mm 4mm; }
+  .row.more { grid-template-columns: 1fr 86mm; gap: 5mm; flex: 1; min-height: 0; }
+
+  .extra { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 5mm; align-content: space-between; }
+  .browser img.tall { aspect-ratio: 1440 / 1025; }
+  .extra .shot-caption { margin-top: 2mm; font-size: 9pt; }
+
+  ul.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 3.2mm; }
+  ul.checks li { display: flex; gap: 3mm; font-size: 10pt; line-height: 1.4; color: var(--text); }
+  ul.checks svg { font-size: 13pt; color: #fff; fill: var(--green); stroke: #fff; stroke-width: 2.4; margin-top: 0.2mm; }
+  .stack { margin-top: 6mm; }
+  .stack h3 { margin: 0 0 2.5mm; font-size: 10.5pt; color: var(--purple); }
+  .chips { display: flex; flex-wrap: wrap; gap: 2mm; }
+  .chips span { background: #fff; border-radius: 10mm; padding: 1mm 3.2mm; font-size: 8.8pt; font-weight: 500; color: #3b2a73; box-shadow: 0 0.2mm 0.6mm rgba(60, 30, 120, 0.15); }
+  .note {
+    margin-top: auto; display: flex; align-items: center; gap: 4mm;
+    background: linear-gradient(90deg, #dff3fb, #ede6fd); border-radius: 2.6mm; padding: 4mm 5mm;
+  }
+  .note svg { font-size: 22pt; color: var(--navy); }
+  .note p { margin: 0; font-size: 10pt; font-style: italic; line-height: 1.4; color: var(--navy); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <header class="header short">
+    <div class="band short">
+      <div class="badge"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+      <h1>RESULTS: FRONT END</h1>
+    </div>
+  </header>
+
+  <main class="body">
+    <section class="team">
+      <div class="cell">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div><small>Team Number</small><strong>T.N. - 10</strong></div>
+      </div>
+      <div class="divider"></div>
+      <div class="cell members">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2.5"/><path d="M5.5 16.5a3.5 3.5 0 0 1 7 0"/><path d="M15 9h3M15 13h3"/></svg>
+        <div><small>Team Members</small>
+          <span class="member"><em>2520030184</em> Aniketh Pani</span>
+          <span class="member"><em>2520030187</em> Harshit Sajjanapu</span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="cell">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        <div><small>Guide Name</small><strong>Mr. Shaik Asif</strong></div>
+      </div>
+    </section>
+
+    <div class="row screens">
+      <section class="card blue">
+        <h2>1. Patient Galaxy (Home Page)</h2>
+        <div class="inner">
+          <div class="browser"><div class="bar"><i></i><i></i><i></i><span>localhost:5190</span></div><img src="assets/gx_main.jpg" alt="3D patient galaxy"></div>
+          <p class="shot-caption"><b>409 TCGA patients</b> as glowing points in 3D, coloured by K-Means group. Drag to orbit, scroll to zoom, click any patient.</p>
+        </div>
+      </section>
+      <section class="card green">
+        <h2>2. Unseen Patient Prediction</h2>
+        <div class="inner">
+          <div class="browser"><div class="bar"><i></i><i></i><i></i><span>localhost:5190</span></div><img src="assets/gx_unseen.jpg" alt="Unseen patient landing in Group D"></div>
+          <p class="shot-caption">A held-out patient flies in and lands in <b>Group D</b>. Lines link the 15 most similar patients that voted.</p>
+        </div>
+      </section>
+      <section class="card purple">
+        <h2>3. Pipeline Dashboard</h2>
+        <div class="inner">
+          <div class="browser"><div class="bar"><i></i><i></i><i></i><span>localhost:8501</span></div><img src="assets/st_pipeline.jpg" alt="Streamlit pipeline dashboard"></div>
+          <p class="shot-caption">Set PCA, t-SNE, method and k, then read the <b>scores and maps</b>. A full run takes about 3 seconds.</p>
+        </div>
+      </section>
+    </div>
+
+    <div class="row more">
+      <section class="card blue">
+        <h2>4. Additional Screens</h2>
+        <div class="inner">
+          <div class="extra">
+            <div>
+              <div class="browser"><div class="bar"><i></i><i></i><i></i><span>localhost:5190</span></div><img class="tall" src="assets/gx_gene_tall.jpg" alt="Colour by gene in the PCA layout"></div>
+              <p class="shot-caption"><b>Colour by gene:</b> SOX2 activity across all patients in the PCA layout.</p>
+            </div>
+            <div>
+              <div class="browser"><div class="bar"><i></i><i></i><i></i><span>localhost:5190</span></div><img class="tall" src="assets/gx_all_tall.jpg" alt="All unseen patients sent in"></div>
+              <p class="shot-caption"><b>Send all:</b> 119 unseen patients land, 76 of them with a clear match.</p>
+            </div>
+            <div>
+              <div class="browser"><div class="bar"><i></i><i></i><i></i><span>localhost:8501</span></div><img class="tall" src="assets/st_compare_tall.jpg" alt="Choosing the number of groups"></div>
+              <p class="shot-caption"><b>Choosing k:</b> scores for 2 to 8 groups and PCA explained variance.</p>
+            </div>
+            <div>
+              <div class="browser"><div class="bar"><i></i><i></i><i></i><span>localhost:8501</span></div><img class="tall" src="assets/st_classify_tall.jpg" alt="Classify a patient in the Streamlit tool"></div>
+              <p class="shot-caption"><b>Classify a patient:</b> vote share per group and position on the t-SNE map.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card purple">
+        <h2><svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Key Front End Features</h2>
+        <div class="inner">
+          <ul class="checks">
+            <li><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Interactive 3D patient galaxy built with three.js and WebGL</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Smooth morph between the t-SNE and PCA layouts</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Live switch of method (K-Means, Hierarchical) and k from 2 to 6</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Colour every patient by any gene's activity</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Unseen patients fly in and land by a nearest-patient vote</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Patient cards with similar patients and group marker genes</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Streamlit pipeline tool with live scores and speed tests</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>CSV downloads of groups, metrics and predictions</li>
+          </ul>
+          <div class="stack">
+            <h3>Built with</h3>
+            <div class="chips"><span>Python</span><span>scikit-learn</span><span>pandas</span><span>Streamlit</span><span>three.js</span><span>WebGL</span><span>matplotlib</span></div>
+          </div>
+          <div class="note">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>
+            <p>Runs on real TCGA data: 528 patients, with 119 kept out to test the model.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer"><span class="rule"></span>Innovation <span class="sep">|</span> Research <span class="sep">|</span> Impact<span class="rule"></span></footer>
+</div>
+</body>
+</html>

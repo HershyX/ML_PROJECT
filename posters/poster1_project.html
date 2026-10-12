@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project Presentation Poster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="poster.css">
+<style>
+  .row.top { grid-template-columns: 1fr 1fr; flex: none; }
+  .row.bottom { grid-template-columns: 88mm 1fr; flex: 1; min-height: 0; }
+
+  .illustration { margin-top: auto; padding-top: 3mm; display: flex; justify-content: center; }
+  .illustration svg { width: 100%; height: 23mm; }
+
+  /* Flowchart */
+  .flow { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+  .node {
+    width: 66mm; text-align: center; color: #1c2433; border-radius: 2.4mm; padding: 1.6mm 3mm;
+    box-shadow: 0 0.3mm 0.8mm rgba(15, 35, 80, 0.15);
+  }
+  .node b { display: block; font-size: 10.5pt; font-weight: 700; line-height: 1.2; }
+  .node span { display: block; font-size: 7.6pt; color: #3d4757; line-height: 1.25; margin-top: 0.3mm; }
+  .node.pill { width: 34mm; border-radius: 10mm; background: #bcd7fb; }
+  .node.io { background: #ddd0fb; transform: skewX(-14deg); }
+  .node.io > * { transform: skewX(14deg); }
+  .arrow { width: 0.6mm; flex: 1; min-height: 2.2mm; max-height: 5mm; background: #5b6474; position: relative; }
+  .arrow::after { content: ""; position: absolute; left: 50%; bottom: -0.2mm; transform: translateX(-50%); border: 1.3mm solid transparent; border-top: 1.6mm solid #5b6474; border-bottom: 0; }
+
+  /* Graphs */
+  .graphs { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4mm; }
+  .graph { min-height: 0; background: #fff; border-radius: 2.4mm; box-shadow: 0 0.3mm 1mm rgba(15, 35, 80, 0.12); display: flex; align-items: center; justify-content: center; padding: 1.5mm; }
+  .graph img { width: 100%; height: 100%; max-height: 100%; min-height: 0; object-fit: contain; }
+  .graph-note { font-size: 9pt; color: var(--muted); margin: 3mm 0 0; line-height: 1.4; }
+  .graph-note b { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="poster">
+  <header class="header">
+    <div class="band">
+      <div class="text">
+        <h1>PROJECT PRESENTATION</h1>
+        <p class="dept">Department of Computer Science and Engineering</p>
+        <p class="campus">KLH Bachupally Campus, Hyderabad</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="body">
+    <section class="team">
+      <div class="cell">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div><small>Team Number</small><strong>T.N. - 10</strong></div>
+      </div>
+      <div class="divider"></div>
+      <div class="cell members">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2.5"/><path d="M5.5 16.5a3.5 3.5 0 0 1 7 0"/><path d="M15 9h3M15 13h3"/></svg>
+        <div><small>Team Members</small>
+          <span class="member"><em>2520030184</em> Aniketh Pani</span>
+          <span class="member"><em>2520030187</em> Harshit Sajjanapu</span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="cell">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        <div><small>Guide Name</small><strong>Mr. Shaik Asif</strong></div>
+      </div>
+    </section>
+
+    <section class="title">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+      <span class="label">Project Title :</span>
+      <span class="value">Visualizing Genomic Features for Disease Subtype Cluster Analysis</span>
+    </section>
+
+    <div class="row top">
+      <section class="card blue">
+        <h2><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>INTRODUCTION</h2>
+        <div class="inner">
+          <ul class="points">
+            <li><b>Overview:</b> a machine learning pipeline that groups TCGA cancer patients into disease subtypes from gene activity (RNA-seq, 528 patients, 4,571 genes).</li>
+            <li><b>Problem statement:</b> thousands of noisy gene readings per patient make subtypes hard to see and slow to cluster.</li>
+            <li><b>Objectives:</b> reduce the data with PCA then t-SNE, group patients with K-Means and Hierarchical Clustering, and score separation and speed.</li>
+            <li><b>Scope and significance:</b> an interactive visual tool to explore subtypes and place new patients into a group.</li>
+          </ul>
+          <div class="illustration"><svg id="intro-art" viewBox="0 0 330 98"></svg></div>
+        </div>
+      </section>
+
+      <section class="card green">
+        <h2><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>RESEARCH GAP</h2>
+        <div class="inner">
+          <ul class="points">
+            <li><b>Limitations in existing approaches:</b> clustering raw gene data is slow and noisy, and results are usually shown as static plots.</li>
+            <li><b>Unexplored areas:</b> where a new, unseen patient fits, and how the method and number of groups change the result.</li>
+            <li><b>Need for improved solution:</b> a fast, visual way to compare methods and test the groups on held-out patients.</li>
+            <li><b>How our work addresses the gap:</b> PCA first pipeline (about 10x faster clustering), side by side scoring, a held-out test set and a 3D explorer.</li>
+          </ul>
+          <div class="illustration">
+            <svg viewBox="0 -6 330 98" style="height:22mm">
+              <defs><marker id="head" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#16a34a"/></marker></defs>
+              <path d="M84 22 C 130 -8, 200 -8, 246 20" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#head)"/>
+              <polygon points="18,44 138,44 128,86 28,86" fill="#163d7a"/>
+              <text x="78" y="61" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Poppins">CURRENT</text>
+              <text x="78" y="76" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Poppins">RESEARCH</text>
+              <polygon points="192,44 312,44 302,86 202,86" fill="#16a34a"/>
+              <text x="252" y="61" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Poppins">OUR</text>
+              <text x="252" y="76" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" font-family="Poppins">SOLUTION</text>
+              <text x="78" y="36" fill="#4a5568" font-size="9" text-anchor="middle" font-family="Poppins">raw genes, static plots</text>
+              <text x="252" y="36" fill="#4a5568" font-size="9" text-anchor="middle" font-family="Poppins">PCA first, 3D and interactive</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="row bottom">
+      <section class="card purple">
+        <h2><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>ALGORITHM</h2>
+        <div class="inner">
+          <div class="flow">
+            <div class="node pill"><b>Start</b></div>
+            <div class="arrow"></div>
+            <div class="node io"><div><b>Input Data</b><span>TCGA RNA-seq, 528 patients x 4,571 genes</span></div></div>
+            <div class="arrow"></div>
+            <div class="node" style="background:#c9f0d6"><b>Preprocessing</b><span>Fill blanks with gene median, drop flat genes, z-score</span></div>
+            <div class="arrow"></div>
+            <div class="node" style="background:#fdeaa7"><b>PCA</b><span>50 components keep 73% of the variation</span></div>
+            <div class="arrow"></div>
+            <div class="node" style="background:#ffd9b8"><b>t-SNE</b><span>2D and 3D maps of similar patients</span></div>
+            <div class="arrow"></div>
+            <div class="node" style="background:#fbcfe0"><b>Clustering</b><span>K-Means and Hierarchical (Ward), k = 2 to 6</span></div>
+            <div class="arrow"></div>
+            <div class="node" style="background:#c7ecf0"><b>Evaluate</b><span>Silhouette, Davies-Bouldin, Calinski-Harabasz, run time</span></div>
+            <div class="arrow"></div>
+            <div class="node" style="background:#f9cccc"><b>Classify Unseen Patients</b><span>Vote of the 15 most similar patients</span></div>
+            <div class="arrow"></div>
+            <div class="node pill"><b>End</b></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card red">
+        <h2><svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 17V9"/><path d="M13 17V5"/><path d="M18 17v-6"/></svg>GRAPHS</h2>
+        <div class="inner">
+          <div class="graphs">
+            <div class="graph"><img src="assets/graph_silhouette.svg" alt="Silhouette score by number of groups"></div>
+            <div class="graph"><img src="assets/graph_variance.svg" alt="PCA explained variance"></div>
+            <div class="graph"><img src="assets/graph_unseen.svg" alt="Unseen test patients by match strength"></div>
+            <div class="graph"><img src="assets/graph_time.svg" alt="Execution time against number of genes"></div>
+          </div>
+          <p class="graph-note"><b>Reading the results:</b> K-Means separates the groups better than Hierarchical at every k, and the groups overlap (silhouette below 0.15). PCA first keeps clustering time flat while using all genes grows about 10x. 76 of 119 unseen patients land in a group with a clear match.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer"><span class="rule"></span>Innovation <span class="sep">|</span> Research <span class="sep">|</span> Impact<span class="rule"></span></footer>
+</div>
+
+<script>
+  // Intro art: a gene activity grid reduced to a map of grouped patients
+  const svg = document.getElementById("intro-art");
+  const ns = "http://www.w3.org/2000/svg";
+  const add = (tag, attrs) => { const el = document.createElementNS(ns, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); svg.appendChild(el); return el; };
+  let seed = 7;
+  const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const heat = ["#2563eb", "#7aa2f7", "#dbe4f3", "#f8c189", "#f08a24"];
+  for (let r = 0; r < 7; r++) for (let c = 0; c < 10; c++) add("rect", { x: 14 + c * 10.5, y: 10 + r * 10.5, width: 9.5, height: 9.5, rx: 1.5, fill: heat[Math.floor(rand() * 5)] });
+  add("text", { x: 66.5, y: 92, "font-size": 8.5, "text-anchor": "middle", fill: "#4a5568", "font-family": "Poppins" }).textContent = "4,571 genes per patient";
+  add("path", { d: "M140 46 H182", stroke: "#2563eb", "stroke-width": 3, "stroke-linecap": "round" });
+  add("path", { d: "M176 39 L184 46 L176 53", stroke: "#2563eb", "stroke-width": 3, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" });
+  add("text", { x: 161, y: 36, "font-size": 8.5, "text-anchor": "middle", fill: "#4a5568", "font-family": "Poppins" }).textContent = "PCA, t-SNE";
+  const groups = [[232, 32, "#2563eb"], [292, 30, "#e5383b"], [262, 66, "#f59e0b"]];
+  for (const [cx, cy, color] of groups) for (let i = 0; i < 16; i++) {
+    const a = rand() * Math.PI * 2, d = Math.sqrt(rand()) * 17;
+    add("circle", { cx: cx + Math.cos(a) * d, cy: cy + Math.sin(a) * d * 0.8, r: 2.6, fill: color, opacity: 0.9 });
+  }
+  add("text", { x: 262, y: 92, "font-size": 8.5, "text-anchor": "middle", fill: "#4a5568", "font-family": "Poppins" }).textContent = "patients grouped by subtype";
+</script>
+</body>
+</html>
