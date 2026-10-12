@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Genomic Subtype Explorer</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --ink:#14181f; --muted:#5d6676; --soft:#eef0f4; --accent:#3b5bdb;
+  --c0:#3b5bdb; --c1:#e8590c; --c2:#2f9e44; --c3:#ae3ec9; --c4:#0c8599; --c5:#d6336c;
+  --shadow:0 1px 2px rgba(20,24,31,.06),0 4px 16px rgba(20,24,31,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1218; --card:#171b23; --ink:#e8ebf1; --muted:#9aa3b2; --soft:#212733; --accent:#748ffc;
+    --c0:#748ffc; --c1:#ff922b; --c2:#69db7c; --c3:#da77f2; --c4:#3bc9db; --c5:#f783ac;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1218; --card:#171b23; --ink:#e8ebf1; --muted:#9aa3b2; --soft:#212733; --accent:#748ffc;
+  --c0:#748ffc; --c1:#ff922b; --c2:#69db7c; --c3:#da77f2; --c4:#3bc9db; --c5:#f783ac;
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:28px 16px 64px}
+header{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+h1{font-size:26px;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0;max-width:640px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:var(--card);border-radius:12px;padding:10px 16px;box-shadow:var(--shadow);min-width:110px}
+.stat b{display:block;font-size:20px}
+.stat span{color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.card{background:var(--card);border-radius:16px;padding:18px;box-shadow:var(--shadow);min-width:0}
+.card h2{font-size:15px;margin:0 0 4px}
+.card p.hint{margin:0 0 12px;color:var(--muted);font-size:13px}
+.span8{grid-column:span 8}.span4{grid-column:span 4}.span12{grid-column:span 12}.span6{grid-column:span 6}
+@media (max-width:900px){.span8,.span4,.span6{grid-column:span 12}}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:12px}
+.seg{display:inline-flex;background:var(--soft);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:8px;font:inherit;cursor:pointer}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow);font-weight:600}
+label{color:var(--muted);font-size:13px}
+select,input[type=search]{background:var(--soft);color:var(--ink);border:0;border-radius:8px;padding:7px 10px;font:inherit}
+input[type=search]{width:100%}
+canvas{display:block;width:100%;border-radius:10px}
+.plotbox{position:relative}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);padding:4px 8px;border-radius:6px;font-size:12px;white-space:nowrap;display:none;transform:translate(10px,-110%)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:13px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.kbars{display:grid;gap:8px}
+.krow{display:grid;grid-template-columns:44px 1fr 74px;gap:10px;white-space:nowrap;align-items:center;cursor:pointer;padding:4px 6px;border-radius:8px}
+.krow.on{background:var(--soft)}
+.krow .bar{height:10px;border-radius:5px;background:var(--soft)}
+.krow.on .bar{background:var(--card)}
+.krow .bar div{height:100%;border-radius:5px;background:var(--accent)}
+.krow small{color:var(--muted);text-align:right}
+.markers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.mk{background:var(--soft);border-radius:12px;padding:12px}
+.mk h3{margin:0 0 8px;font-size:14px;display:flex;justify-content:space-between}
+.mk h3 span{color:var(--muted);font-weight:400}
+.chip{display:inline-block;background:var(--card);border-radius:999px;padding:2px 9px;margin:0 4px 4px 0;font-size:12px;cursor:pointer}
+.chip em{color:var(--muted);font-style:normal;margin-left:4px}
+.gene-out{margin-top:12px;min-height:120px}
+.gbar{display:grid;grid-template-columns:70px 1fr 48px;gap:8px;align-items:center;margin:6px 0;font-size:13px}
+.gtrack{position:relative;height:12px;background:var(--soft);border-radius:6px}
+.gtrack div{position:absolute;top:0;height:100%;border-radius:6px}
+.gtrack u{position:absolute;left:50%;top:-2px;width:2px;height:16px;background:var(--muted);opacity:.5;text-decoration:none}
+.sel{margin-top:10px;font-size:13px;color:var(--muted);min-height:20px}
+.sel b{color:var(--ink)}
+.note{color:var(--muted);font-size:13px;margin-top:20px}
+.toprow{display:flex;gap:8px;align-items:center}
+.theme{background:var(--soft);color:var(--ink);border:0;border-radius:8px;padding:7px 12px;cursor:pointer;font:inherit}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Genomic Subtype Explorer</h1>
+      <p class="sub">TCGA gene expression, reduced with PCA and grouped with k-means. Pick a cluster count and see which samples group together and which genes set each group apart.</p>
+    </div>
+    <div class="toprow">
+      <div class="stats" id="stats"></div>
+      <button class="theme" id="theme" aria-label="Toggle theme">Theme</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card span8">
+      <h2>Sample map</h2>
+      <p class="hint">Each dot is one patient sample. Hover for its ID, click to pin it.</p>
+      <div class="controls">
+        <div class="seg" id="kseg"></div>
+        <label>X axis <select id="px"></select></label>
+        <label>Y axis <select id="py"></select></label>
+      </div>
+      <div class="plotbox"><canvas id="scatter" height="460"></canvas><div class="tip" id="tip"></div></div>
+      <div class="legend" id="legend"></div>
+      <div class="sel" id="sel">No sample pinned.</div>
+    </section>
+
+    <div class="span4" style="display:grid;gap:16px;align-content:start">
+      <section class="card">
+        <h2>How many clusters?</h2>
+        <p class="hint">Silhouette score per k. Higher means tighter, better separated groups.</p>
+        <div class="kbars" id="kbars"></div>
+      </section>
+      <section class="card">
+        <h2>Variance per component</h2>
+        <p class="hint">Share of total variation each principal component captures.</p>
+        <canvas id="scree" height="170"></canvas>
+      </section>
+    </div>
+
+    <section class="card span12">
+      <h2>Marker genes</h2>
+      <p class="hint">Genes most elevated in each cluster compared with the others. Click a gene to inspect it below.</p>
+      <div class="markers" id="markers"></div>
+    </section>
+
+    <section class="card span8">
+      <h2>Top variable genes by sample</h2>
+      <p class="hint">The 40 most variable genes, samples ordered by cluster. Warm is above the gene's average, cool is below.</p>
+      <canvas id="heat" height="360"></canvas>
+    </section>
+
+    <section class="card span4">
+      <h2>Gene explorer</h2>
+      <p class="hint">Search any of the <span id="gcount"></span> genes.</p>
+      <input type="search" id="gsearch" placeholder="Try EGFR, RAC1, TSTA3" list="glist" autocomplete="off">
+      <datalist id="glist"></datalist>
+      <div class="gene-out" id="gout"></div>
+    </section>
+  </div>
+
+  <p class="note" id="note"></p>
+</div>
+
+<script src="data.js"></script>
+<script>
+const D = window.TCGA;
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const colors = () => [0,1,2,3,4,5].map(i => css('--c'+i));
+const nS = D.samples.length, nG = D.genes.length;
+const state = { k: 3, px: 0, py: 1, pinned: -1 };
+const geneIdx = new Map(D.genes.map((g,i)=>[g,i]));
+
+function fitCanvas(c){
+  const r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  c.width = r.width*dpr; c.height = parseInt(c.getAttribute('height'))*dpr;
+  c.style.height = c.getAttribute('height')+'px';
+  const g = c.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0);
+  return {g, w:r.width, h:parseInt(c.getAttribute('height'))};
+}
+
+/* header stats */
+$('stats').innerHTML = [[nS,'samples'],[nG.toLocaleString(),'genes'],[D.nMissing,'values imputed']]
+  .map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+$('gcount').textContent = nG.toLocaleString();
+
+/* controls */
+const ksegEl = $('kseg');
+for (let k=2;k<=6;k++){
+  const b = document.createElement('button'); b.textContent = 'k = '+k; b.dataset.k = k;
+  b.onclick = ()=>{ state.k = k; renderAll(); };
+  ksegEl.appendChild(b);
+}
+['px','py'].forEach((id,i)=>{
+  const s = $(id);
+  for (let p=0;p<5;p++) s.add(new Option(`PC${p+1} (${D.explained[p]}%)`, p));
+  s.value = i; s.onchange = ()=>{ state[id] = +s.value; drawScatter(); };
+});
+
+/* scatter */
+let pts = [];
+function drawScatter(){
+  const {g,w,h} = fitCanvas($('scatter'));
+  const C = colors(), lab = D.k[state.k].labels;
+  const xs = D.pc.map(r=>r[state.px]), ys = D.pc.map(r=>r[state.py]);
+  const pad = 28, mnx=Math.min(...xs), mxx=Math.max(...xs), mny=Math.min(...ys), mxy=Math.max(...ys);
+  const sx = v => pad + (v-mnx)/(mxx-mnx)*(w-2*pad), sy = v => h-pad - (v-mny)/(mxy-mny)*(h-2*pad);
+  g.clearRect(0,0,w,h);
+  g.strokeStyle = css('--soft'); g.lineWidth = 1;
+  g.beginPath(); g.moveTo(sx(0),pad/2); g.lineTo(sx(0),h-pad/2); g.moveTo(pad/2,sy(0)); g.lineTo(w-pad/2,sy(0)); g.stroke();
+  g.fillStyle = css('--muted'); g.font = '12px system-ui';
+  g.fillText(`PC${state.px+1}`, w-pad-24, h-8); g.save(); g.translate(12,pad+20); g.rotate(-Math.PI/2); g.fillText(`PC${state.py+1}`,0,0); g.restore();
+  pts = xs.map((x,i)=>({i, x:sx(x), y:sy(ys[i])}));
+  pts.forEach(p=>{
+    g.globalAlpha = state.pinned<0 || p.i===state.pinned ? .8 : .35;
+    g.fillStyle = C[lab[p.i]]; g.beginPath(); g.arc(p.x,p.y,4,0,7); g.fill();
+  });
+  g.globalAlpha = 1;
+  if (state.pinned>=0){
+    const p = pts[state.pinned]; g.strokeStyle = css('--ink'); g.lineWidth = 2;
+    g.beginPath(); g.arc(p.x,p.y,8,0,7); g.stroke();
+  }
+}
+function nearest(e){
+  const r = $('scatter').getBoundingClientRect(), mx = e.clientX-r.left, my = e.clientY-r.top;
+  let best=null, bd=144;
+  for (const p of pts){ const d=(p.x-mx)**2+(p.y-my)**2; if (d<bd){bd=d;best=p;} }
+  return best;
+}
+$('scatter').addEventListener('mousemove', e=>{
+  const p = nearest(e), t = $('tip');
+  if (!p){ t.style.display='none'; return; }
+  const r = $('scatter').getBoundingClientRect();
+  t.style.display='block'; t.style.left=(e.clientX-r.left)+'px'; t.style.top=(e.clientY-r.top)+'px';
+  t.textContent = `${D.samples[p.i]}  cluster ${D.k[state.k].labels[p.i]+1}`;
+});
+$('scatter').addEventListener('mouseleave', ()=>$('tip').style.display='none');
+$('scatter').addEventListener('click', e=>{
+  const p = nearest(e); state.pinned = p ? p.i : -1; drawScatter(); renderSel();
+});
+function renderSel(){
+  const i = state.pinned; if (i<0){ $('sel').textContent = 'No sample pinned.'; return; }
+  const c = D.k[state.k].labels[i]+1;
+  $('sel').innerHTML = `<b>${D.samples[i]}</b> sits in cluster ${c}. Expression spread across genes: ${D.sampleSd[i].toFixed(2)} SD. PC${state.px+1} ${D.pc[i][state.px].toFixed(1)}, PC${state.py+1} ${D.pc[i][state.py].toFixed(1)}.`;
+}
+
+/* legend, k selector */
+function renderLegend(){
+  const C = colors(), K = D.k[state.k];
+  $('legend').innerHTML = K.sizes.map((n,i)=>`<span><i style="background:${C[i]}"></i>Cluster ${i+1}, ${n} samples (${(n/nS*100).toFixed(0)}%)</span>`).join('');
+  [...ksegEl.children].forEach(b=>b.classList.toggle('on', +b.dataset.k===state.k));
+}
+function renderKBars(){
+  const sil = Object.entries(D.k).map(([k,v])=>[+k,v.silhouette]), mx = Math.max(...sil.map(s=>s[1]));
+  const best = sil.find(s=>s[1]===mx)[0];
+  $('kbars').innerHTML = sil.map(([k,s])=>`<div class="krow ${k===state.k?'on':''}" data-k="${k}">
+    <span>k = ${k}</span><div class="bar"><div style="width:${s/mx*100}%"></div></div><small>${s.toFixed(3)}${k===best?' best':''}</small></div>`).join('');
+  document.querySelectorAll('.krow').forEach(r=>r.onclick=()=>{state.k=+r.dataset.k; renderAll();});
+}
+function drawScree(){
+  const {g,w,h} = fitCanvas($('scree')), e = D.explained, mx = Math.max(...e), bw = (w-20)/e.length;
+  g.clearRect(0,0,w,h); g.font='11px system-ui';
+  e.forEach((v,i)=>{
+    const bh = v/mx*(h-40), x = 10+i*bw;
+    g.fillStyle = (i===state.px||i===state.py) ? css('--accent') : css('--soft');
+    g.beginPath(); g.roundRect(x+4,h-22-bh,bw-8,bh,4); g.fill();
+    g.fillStyle = css('--muted'); g.textAlign='center';
+    g.fillText('PC'+(i+1), x+bw/2, h-6); g.fillText(v.toFixed(1)+'%', x+bw/2, h-26-bh);
+  });
+}
+
+/* markers */
+function renderMarkers(){
+  const C = colors(), K = D.k[state.k];
+  $('markers').innerHTML = K.markers.map((m,i)=>`<div class="mk"><h3><span style="color:${C[i]}">Cluster ${i+1}</span><span>${K.sizes[i]} samples</span></h3>
+    ${m.map(x=>`<span class="chip" data-g="${x.gene}">${x.gene}<em>${x.z>0?'+':''}${x.z}</em></span>`).join('')}</div>`).join('');
+  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ $('gsearch').value=c.dataset.g; showGene(c.dataset.g); $('gsearch').scrollIntoView({behavior:'smooth',block:'center'}); });
+}
+
+/* heatmap */
+function drawHeat(){
+  const {g,w,h} = fitCanvas($('heat')), lab = D.k[state.k].labels, C = colors();
+  const order = [...Array(nS).keys()].sort((a,b)=>lab[a]-lab[b]||a-b);
+  const left = 64, top = 10, band = 8, rows = D.heatGenes.length, cw = (w-left)/nS, rh = (h-top-band-6)/rows;
+  g.clearRect(0,0,w,h);
+  order.forEach((s,ci)=>{ g.fillStyle = C[lab[s]]; g.fillRect(left+ci*cw, top, Math.ceil(cw), band); });
+  D.heat.forEach((row,ri)=>{
+    order.forEach((s,ci)=>{
+      const v = Math.max(-3,Math.min(3,row[s]))/3;
+      g.fillStyle = v>=0 ? `rgba(224,90,40,${v})` : `rgba(60,110,230,${-v})`;
+      g.fillRect(left+ci*cw, top+band+4+ri*rh, Math.ceil(cw), Math.ceil(rh));
+    });
+    g.fillStyle = css('--muted'); g.font='10px system-ui'; g.textAlign='right';
+    g.fillText(D.heatGenes[ri], left-6, top+band+4+ri*rh+rh*0.75);
+  });
+}
+
+/* gene explorer */
+function showGene(q){
+  const i = geneIdx.get(q.trim().toUpperCase()) ?? geneIdx.get(q.trim());
+  const out = $('gout');
+  if (i===undefined){ out.innerHTML = q ? `<p class="hint">No gene named "${q.replace(/</g,'')}" in this dataset.</p>` : ''; return; }
+  const C = colors(), K = D.k[state.k], z = K.geneClusterZ[i], span = 2.5;
+  out.innerHTML = `<p style="margin:0 0 4px"><b>${D.genes[i]}</b></p>
+    <p class="hint" style="margin-bottom:8px">Mean expression ${D.geneMean[i].toFixed(2)}, variance ${D.geneVar[i].toFixed(2)}</p>` +
+    z.map((v,c)=>{
+      const half = Math.min(Math.abs(v),span)/span*50;
+      const style = v>=0 ? `left:50%;width:${half}%` : `left:${50-half}%;width:${half}%`;
+      return `<div class="gbar"><span>Cluster ${c+1}</span><div class="gtrack"><u></u><div style="${style};background:${C[c]}"></div></div><span>${v>0?'+':''}${v}</span></div>`;
+    }).join('') + `<p class="hint">Bars show the cluster average in standard deviations from the gene's overall mean.</p>`;
+}
+$('glist').innerHTML = D.genes.map(g=>`<option value="${g}">`).join('');
+$('gsearch').addEventListener('input', e=>showGene(e.target.value));
+
+/* theme */
+$('theme').onclick = ()=>{
+  const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme = dark ? 'light' : 'dark'; renderAll();
+};
+
+function renderAll(){
+  renderLegend(); renderKBars(); renderMarkers(); drawScatter(); drawScree(); drawHeat(); renderSel();
+  if ($('gsearch').value) showGene($('gsearch').value);
+  const K = D.k[state.k];
+  $('note').textContent = `Features were standardized per gene and reduced to 10 principal components before k-means (20 restarts). Silhouette for k = ${state.k} is ${K.silhouette}. Scores this low mean the groups overlap, so treat the clusters as exploratory.`;
+}
+addEventListener('resize', ()=>{ drawScatter(); drawScree(); drawHeat(); });
+renderAll();
+</script>
+</body>
+</html>
